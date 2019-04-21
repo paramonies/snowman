@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- <link rel="stylesheet" href="/bootstrap/css/bootstrap.css"> -->
+    <header>header</header>
     <nuxt/>
     <my-footer/>
   </div>
