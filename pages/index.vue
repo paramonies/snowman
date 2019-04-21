@@ -53,22 +53,15 @@ export default {
       await axios.post('/api/users/add', {
         name: this.newUserName
       }).then((response) => {
-        console.log(response.data)
-        // return { users: response.data }
-        // var test = [
-        //   {
-        //     name: 'testtest'
-        //   }
-        // ]
-        // return { users: test }
-        console.log(this)
+        this.newUserName = null
         this.users = response.data
       })
-      // this.$set(post, 'edit', true)
-      // Vue.set(this, 'users', users)
-      // let { data } = await axios.get(process.env.API_SERVER + `/v1/projects`)
-      // this.items = data
     }
+    // async remove (e) {
+    //   await axios.post('/api/users/remove', {
+
+    //   })
+    // }
   },
   head () {
     return {

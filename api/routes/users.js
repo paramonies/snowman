@@ -21,7 +21,11 @@ router.get('/users', function (req, res, next) {
 
 router.get('/users/:id', function (req, res, next) {
   User.findById(req.params.id, function (err, docs) {
-    res.json(docs)
+    if (docs) {
+      res.json(docs)
+    } else {
+      res.sendStatus(404)
+    }
   })
 })
 
@@ -30,6 +34,12 @@ router.post('/users/add', function (req, res, next) {
     User.find(function (err, docs) {
       res.json(docs)
     })
+  })
+})
+
+router.post('/users/remove', function (req, res, next) {
+  User.deleteOne({ _id: req.body._id }, function (err) {
+    res.json(200)
   })
 })
 
