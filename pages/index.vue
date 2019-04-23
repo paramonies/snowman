@@ -6,11 +6,31 @@
     </h1>
     <ul class="users">
       <li v-for="(user, index) in users" :key="index" class="user">
-        <nuxt-link :to="{ name: 'id', params: { id: index }}">
+        <nuxt-link :to="{ name: 'id', params: { id: user._id }}">
           {{ user.name }}
         </nuxt-link>
       </li>
     </ul>
+    <form action="/users/add" method="POST" @submit.prevent="add">
+        <label>
+          <input type="text" v-model="newUserName">
+        </label>
+        <button type="submit">+</button>
+    </form>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+      <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+      <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+      <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="home">Home text...</div>
+      <div role="tabpanel" class="tab-pane" id="profile">Profile text...</div>
+      <div role="tabpanel" class="tab-pane" id="messages">Messages text...</div>
+      <div role="tabpanel" class="tab-pane" id="settings">Settings text...</div>
+    </div>
   </section>
 </template>
 
@@ -18,9 +38,30 @@
 import axios from '~/plugins/axios'
 
 export default {
+  data (context) {
+    return {
+      users: [],
+      newUserName: null
+    }
+  },
   async asyncData () {
     let { data } = await axios.get('/api/users')
     return { users: data }
+  },
+  methods: {
+    async add (e) {
+      await axios.post('/api/users/add', {
+        name: this.newUserName
+      }).then((response) => {
+        this.newUserName = null
+        this.users = response.data
+      })
+    }
+    // async remove (e) {
+    //   await axios.post('/api/users/remove', {
+
+    //   })
+    // }
   },
   head () {
     return {

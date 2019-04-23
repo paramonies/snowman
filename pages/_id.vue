@@ -1,15 +1,11 @@
 <template>
   <section class="container">
-    <img src="~assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
-    <h1 class="title">
-      User
-    </h1>
-    <h2 class="info">
-      {{ user.name }}
-    </h2>
-    <nuxt-link class="button" to="/">
-      Users
-    </nuxt-link>
+    <h1>{{ user.name }}</h1>
+    <form method="POST" action="#" @submit.prevent="remove">
+      <input type="hidden" name="id" :value="user._id">
+      <button type="submit">Удалить</button>
+    </form>
+    <nuxt-link to="/">Вернуться</nuxt-link>
   </section>
 </template>
 
@@ -21,11 +17,21 @@ export default {
   asyncData ({ params, error }) {
     return axios.get('/api/users/' + params.id)
       .then((res) => {
+        console.log(res)
         return { user: res.data }
       })
       .catch((e) => {
         error({ statusCode: 404, message: 'User not found' })
       })
+  },
+  methods: {
+    async remove (e) {
+      await axios.post('/api/users/remove', {
+        _id: this.user._id
+      }).then((response) => {
+        this.$router.replace({ path: '/' })
+      })
+    }
   },
   head () {
     return {
